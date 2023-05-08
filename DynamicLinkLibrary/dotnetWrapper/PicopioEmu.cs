@@ -5,6 +5,8 @@
     /// </summary>
     public class PicopioEmu
     {
+        public static readonly int UNUSE = -1;
+
         /// <summary>
         /// in, out, mov で使用する。
         /// </summary>
@@ -184,7 +186,7 @@
         /// <param name="lbl"></param>
         /// <param name="sideset"></param>
         /// <param name="delay"></param>
-        public static void Jmp(Operands3 cond, string lbl, int sideset, int delay)
+        public static void Jmp(Operands3 cond, string lbl, int sideset = -1, int delay = -1)
         {
             NativeMethod.pio_jmp((int)cond, lbl, sideset, delay);
         }
@@ -198,7 +200,7 @@
         /// <param name="rel"></param>
         /// <param name="sideset"></param>
         /// <param name="delay"></param>
-        public static void Wait(bool polarity, Operands4 src, int index, bool rel, int sideset, int delay)
+        public static void Wait(bool polarity, Operands4 src, int index, bool rel, int sideset = -1, int delay = -1)
         {
             NativeMethod.pio_wait(polarity, (int)src, index, rel, sideset, delay);
         }
