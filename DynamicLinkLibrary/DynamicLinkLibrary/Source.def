@@ -1,0 +1,23 @@
+LIBRARY picopio_emu
+
+EXPORTS
+	pio_init
+	pio_code_start
+	pio_code_start_simple
+	pio_code_end
+	pio_run_emulation
+	pio_jmp
+	pio_wait
+	pio_in
+	pio_out
+	pio_push
+	pio_pull
+	pio_mov
+	pio_irq
+	pio_set
+	pio_comment
+	pio_label
+	pio_nop
+	pio_wrap_target
+	pio_wrap
+	pio_origin
