@@ -3,7 +3,7 @@
     /// <summary>
     /// PIOエミュレータ
     /// </summary>
-    public static class PicopioEmu
+    public class PicopioEmu
     {
         /// <summary>
         /// エミュレータのオプション機能を設定します。
