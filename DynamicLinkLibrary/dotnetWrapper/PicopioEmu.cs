@@ -60,7 +60,7 @@
         }
 
         /// <summary>
-        /// push, pull で使用する。
+        /// 未使用。
         /// </summary>
         public enum Operands5
         {
@@ -203,6 +203,145 @@
         public static void Wait(bool polarity, Operands4 src, int index, bool rel, int sideset = -1, int delay = -1)
         {
             NativeMethod.pio_wait(polarity, (int)src, index, rel, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="bitcount"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void In(Operands1 src, int bitcount, int sideset = -1, int delay = -1)
+        {
+            NativeMethod.pio_in((int)src, bitcount, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <param name="bitcount"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Out(Operands1 dest, int bitcount, int sideset = -1, int delay = -1)
+        {
+            NativeMethod.pio_out((int)dest, bitcount, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="iffull"></param>
+        /// <param name="block"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Push(bool iffull, bool block, int sideset = -1, int delay = -1)
+        {
+            NativeMethod.pio_push(iffull, block, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ifempty"></param>
+        /// <param name="block"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Pull(bool ifempty, bool block, int sideset = -1, int delay = -1)
+        {
+            NativeMethod.pio_pull(ifempty, block, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <param name="op"></param>
+        /// <param name="src"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Mov(Operands1 dest, Operands2 op, Operands1 src, int sideset = -1, int delay = -1)
+        {
+            NativeMethod.pio_mov((int)dest, (int)op, (int)src, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="clr"></param>
+        /// <param name="wait"></param>
+        /// <param name="index"></param>
+        /// <param name="rel"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Irq(bool clr, bool wait, int index, bool rel, int sideset = -1, int delay = -1)
+        {
+            NativeMethod.pio_irq(clr, wait, index, rel, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dest"></param>
+        /// <param name="data"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Set(Operands1 dest, int data, int sideset = -1, int delay = -1)
+        {
+            NativeMethod.pio_set((int)dest, data, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Nop(int sideset = -1, int delay = -1)
+        {
+            NativeMethod.pio_nop(sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="comment"></param>
+        public static void Comment(string comment)
+        {
+            NativeMethod.pio_comment(comment);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lbl"></param>
+        public static void Label(string lbl)
+        {
+            NativeMethod.pio_label(lbl);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void WrapTarget()
+        {
+            NativeMethod.pio_wrap_target();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void Wrap()
+        {
+            NativeMethod.pio_wrap();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static void Origin(int addr)
+        {
+            NativeMethod.pio_origin(addr);
         }
     }
 }
