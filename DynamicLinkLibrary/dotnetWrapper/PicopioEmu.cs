@@ -8,7 +8,7 @@
         /// <summary>
         /// in, out, mov で使用する。
         /// </summary>
-        enum Operands1
+        public enum Operands1
         {
             PINS = 100,
             X = 101,
@@ -25,7 +25,7 @@
         /// <summary>
         /// mov で使用する。
         /// </summary>
-        enum Operands2
+        public enum Operands2
         {
             NONE = 200,
             INVERT = 201,
@@ -35,7 +35,7 @@
         /// <summary>
         /// jmp で使用する。
         /// </summary>
-        enum Operands3
+        public enum Operands3
         {
             ALWAYS = 300,
             X_EQ_0 = 301,
@@ -50,7 +50,7 @@
         /// <summary>
         /// wait で使用する。
         /// </summary>
-        enum Operands4
+        public enum Operands4
         {
             GPIO = 400,
             PIN = Operands3.PIN,
@@ -60,7 +60,7 @@
         /// <summary>
         /// push, pull で使用する。
         /// </summary>
-        enum Operands5
+        public enum Operands5
         {
             BLOCK = 500,
             NOBLOCK = 501,
@@ -156,5 +156,51 @@
             NativeMethod.pio_code_start_simple(funcname, smId, inPins, inNum, outPins, outNum, sidesetPins, sidesetNum, sidesetOpt);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writeCode"></param>
+        /// <param name="fileNameCode"></param>
+        public static void CodeEnd(bool writeCode, string fileNameCode)
+        {
+            NativeMethod.pio_code_end(writeCode, fileNameCode);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cycles"></param>
+        /// <param name="fileNameIn"></param>
+        /// <param name="fileNameOut"></param>
+        public static void RunEmulation(int cycles, string fileNameIn, string fileNameOut)
+        {
+            NativeMethod.pio_run_emulation(cycles, fileNameIn, fileNameOut);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cond"></param>
+        /// <param name="lbl"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Jmp(Operands3 cond, string lbl, int sideset, int delay)
+        {
+            NativeMethod.pio_jmp((int)cond, lbl, sideset, delay);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="polarity"></param>
+        /// <param name="src"></param>
+        /// <param name="index"></param>
+        /// <param name="rel"></param>
+        /// <param name="sideset"></param>
+        /// <param name="delay"></param>
+        public static void Wait(bool polarity, Operands4 src, int index, bool rel, int sideset, int delay)
+        {
+            NativeMethod.pio_wait(polarity, (int)src, index, rel, sideset, delay);
+        }
     }
 }
