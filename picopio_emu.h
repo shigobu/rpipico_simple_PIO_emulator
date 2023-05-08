@@ -700,6 +700,8 @@
 ////////////////////////////
 // emulator API
 ////////////////////////////
+extern void pio_init(bool out_gpio_bit_by_bit, bool in_gpio_bit_by_bit, bool disp_asm_stdout, bool distp_trace_stdout);
+
 extern void pio_code_start(
 	char	*funcname, 
 	int		sm_id,					// state machine ID (for IRQ rel)
@@ -957,6 +959,10 @@ static _PIO_INFO		_pio_info_g;
 #define	PIO_SIMSTATE_RUN_END		3
 
 static int			_pio_emu_state_g	= PIO_SIMSTATE_CODE_START;
+static bool			PIO_OUT_GPIO_BIT_BY_BIT = false;
+static bool			PIO_IN_GPIO_BIT_BY_BIT = false;
+static bool			DISP_ASM_STDOUT = false;
+static bool			DISP_TRACE_STDOUT = false;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // function body
@@ -1382,23 +1388,23 @@ static void pio_write_assembler_code(const char *file_name_code)
 			break;
 
 		// write code
-#ifdef DISP_ASM_STDOUT
-		fprintf(stdout, "%03d (pc=0x%02x):\t", inst->code_line, inst->addr);
-#endif
+		if (DISP_ASM_STDOUT) { 
+			fprintf(stdout, "%03d (pc=0x%02x):\t", inst->code_line, inst->addr);
+		}
 		if (inst->inst_type != PIO_INST_COMMENT
 					&& inst->inst_type != PIO_INST_LABEL
 					&& inst->inst_type != PIO_INST_WRAP_TARGET
 					&& inst->inst_type != PIO_INST_WRAP
 					&& inst->inst_type != PIO_INST_ORIGIN) {
 			fprintf(fp,     "\t");
-#ifdef DISP_ASM_STDOUT
-			fprintf(stdout, "\t");
-#endif
+			if (DISP_ASM_STDOUT) { 
+				fprintf(stdout, "\t");
+			}
 		}
 		fprintf(fp,     "%s\t; line %03d\n", inst->asmbuf, inst->code_line);
-#ifdef DISP_ASM_STDOUT
-		fprintf(stdout, "%s\n", inst->asmbuf);
-#endif
+		if (DISP_ASM_STDOUT) { 
+			fprintf(stdout, "%s\n", inst->asmbuf);
+		}
 	}
 
 	// write C interface
@@ -1718,48 +1724,47 @@ static void pio_read_csv_input(void)
 	while (1) {
 		if (_pio_info_g.csvin_cache_valid == false) {
 			int	b0, b1, i0;
-#ifdef	PIO_IN_GPIO_BIT_BY_BIT
 			int	gp[29];	// 29 ... GPIO 0-28
-#endif
 
 			// read line
 			if (fgets(_pio_info_g.csvin_cache, PIO_MAX_CSVLINE_LEN - 1, fp) == NULL)
 				return;
 
 			// scan line
-#ifdef	PIO_IN_GPIO_BIT_BY_BIT
-			sscanf_s(_pio_info_g.csvin_cache, "%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, 0x%x, %d, 0x%x, %d\n",
-						&(_pio_info_g.csvin_info.cycles),
-						&(gp[0]), &(gp[1]), &(gp[2]), &(gp[3]), &(gp[4]), &(gp[5]), &(gp[6]), &(gp[7]), &(gp[8]), &(gp[9]),
-						&(gp[10]), &(gp[11]), &(gp[12]), &(gp[13]), &(gp[14]), &(gp[15]), &(gp[16]), &(gp[17]), &(gp[18]), &(gp[19]),
-						&(gp[20]), &(gp[21]), &(gp[22]), &(gp[23]), &(gp[24]), &(gp[25]), &(gp[26]), &(gp[27]), &(gp[28]),
-						&i0,
-						&b0,
-						&(_pio_info_g.csvin_info.txfifo_val),
-						&b1
-					);
-			{
-				int			i;
-				uint32_t	v;
-				v	= 0;
-				for (i = 0; i < 29; i++) {	// 29 ... GPIO 0-28
-					v	<<= 1;
-					if (gp[28 - i] != 0) {
-						v	|= 1;
+			if (PIO_IN_GPIO_BIT_BY_BIT) { 
+				sscanf_s(_pio_info_g.csvin_cache, "%d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, 0x%x, %d, 0x%x, %d\n",
+							&(_pio_info_g.csvin_info.cycles),
+							&(gp[0]), &(gp[1]), &(gp[2]), &(gp[3]), &(gp[4]), &(gp[5]), &(gp[6]), &(gp[7]), &(gp[8]), &(gp[9]),
+							&(gp[10]), &(gp[11]), &(gp[12]), &(gp[13]), &(gp[14]), &(gp[15]), &(gp[16]), &(gp[17]), &(gp[18]), &(gp[19]),
+							&(gp[20]), &(gp[21]), &(gp[22]), &(gp[23]), &(gp[24]), &(gp[25]), &(gp[26]), &(gp[27]), &(gp[28]),
+							&i0,
+							&b0,
+							&(_pio_info_g.csvin_info.txfifo_val),
+							&b1
+						);
+				{
+					int			i;
+					uint32_t	v;
+					v	= 0;
+					for (i = 0; i < 29; i++) {	// 29 ... GPIO 0-28
+						v	<<= 1;
+						if (gp[28 - i] != 0) {
+							v	|= 1;
+						}
 					}
+					_pio_info_g.csvin_info.txfifo_val	= v;
 				}
-				_pio_info_g.csvin_info.txfifo_val	= v;
 			}
-#else
-			sscanf_s(_pio_info_g.csvin_cache, "%d, 0x%x, 0x%x, %d, 0x%x, %d\n",
-						&(_pio_info_g.csvin_info.cycles),
-						&(_pio_info_g.csvin_info.gpio_i),
-						&i0,
-						&b0,
-						&(_pio_info_g.csvin_info.txfifo_val),
-						&b1
-					);
-#endif
+			else { 
+				sscanf_s(_pio_info_g.csvin_cache, "%d, 0x%x, 0x%x, %d, 0x%x, %d\n",
+							&(_pio_info_g.csvin_info.cycles),
+							&(_pio_info_g.csvin_info.gpio_i),
+							&i0,
+							&b0,
+							&(_pio_info_g.csvin_info.txfifo_val),
+							&b1
+						);
+			}
 			_pio_info_g.csvin_info.irq_i	= (uint8_t)i0;
 
 			if (b0 == 0)
@@ -1781,16 +1786,16 @@ static void pio_read_csv_input(void)
 		if (_pio_info_g.cycles > _pio_info_g.csvin_info.cycles) {	// (past)
 			pio_copy_csvin_to_input();
 			_pio_info_g.csvin_cache_valid = false;
-#ifdef DISP_TRACE_STDOUT
-			fprintf(stdout, "\tREAD CSV (cycle %d)\n", _pio_info_g.csvin_info.cycles);
-#endif
+			if (DISP_TRACE_STDOUT) { 
+				fprintf(stdout, "\tREAD CSV (cycle %d)\n", _pio_info_g.csvin_info.cycles);
+			}
 		}
 		else if (_pio_info_g.cycles == _pio_info_g.csvin_info.cycles) {	// (current)
 			pio_copy_csvin_to_input();
 			_pio_info_g.csvin_cache_valid = false;
-#ifdef DISP_TRACE_STDOUT
-			fprintf(stdout, "\tREAD CSV (cycle %d)\n", _pio_info_g.csvin_info.cycles);
-#endif
+			if (DISP_TRACE_STDOUT) { 
+				fprintf(stdout, "\tREAD CSV (cycle %d)\n", _pio_info_g.csvin_info.cycles);
+			}
 			return;
 		}
 		else {	// (future)
@@ -1831,15 +1836,16 @@ static void pio_write_csv_output_header(void)
 	fprintf(fp, "pc, ");
 	fprintf(fp, "inst, ");
 
-#ifdef	PIO_OUT_GPIO_BIT_BY_BIT
-	for (i = 0; i < 29; i++) {	// 29 ... GPIO 0-28
-		if (pio_is_assigned_pin(i) == true) {
-			fprintf(fp, "gpio_%d, ", i);
+	if (PIO_OUT_GPIO_BIT_BY_BIT) { 
+		for (i = 0; i < 29; i++) {	// 29 ... GPIO 0-28
+			if (pio_is_assigned_pin(i) == true) {
+				fprintf(fp, "gpio_%d, ", i);
+			}
 		}
 	}
-#else
-	fprintf(fp, "gpio, ");
-#endif
+	else { 
+		fprintf(fp, "gpio, ");
+	}
 
 	fprintf(fp, "irq, ");
 	fprintf(fp, "x, ");
@@ -1905,20 +1911,21 @@ static void pio_write_csv_output_regs(void)
 	ap		= &(_pio_info_g.asmline[_pio_info_g.asmline_ptr]);
 
 	// - write csv output every cycle
-#ifdef	PIO_OUT_GPIO_BIT_BY_BIT
-	val	= _pio_info_g.gpio_o;
-	for (i = 0; i < 29; i++) {	// 29 ... GPIO 0-28
-		if (pio_is_assigned_pin(i) == true) {
-			if ((val & 1) != 0)
-				fprintf(fp, "1, ");
-			else
-				fprintf(fp, "0, ");
+	if (PIO_OUT_GPIO_BIT_BY_BIT) { 
+		val	= _pio_info_g.gpio_o;
+		for (i = 0; i < 29; i++) {	// 29 ... GPIO 0-28
+			if (pio_is_assigned_pin(i) == true) {
+				if ((val & 1) != 0)
+					fprintf(fp, "1, ");
+				else
+					fprintf(fp, "0, ");
+			}
+			val	>>=	1;
 		}
-		val	>>=	1;
 	}
-#else
-	fprintf(fp, "0x%08x, ", _pio_info_g.gpio_o);
-#endif
+	else { 
+		fprintf(fp, "0x%08x, ", _pio_info_g.gpio_o);
+	}
 
 	fprintf(fp, "0x%02x, ", _pio_info_g.irq_o);
 	fprintf(fp, "0x%08x, ", _pio_info_g.x);
@@ -2013,9 +2020,9 @@ static void pio_exec_instruction(void)
 	if (_pio_info_g.delay_timer > 0) {
 		pio_write_csv_output_inst();
 		pio_write_csv_output_regs();
-#ifdef DISP_TRACE_STDOUT
-		fprintf(stdout, "cycle %d\t\t\tDELAY\n", _pio_info_g.cycles);
-#endif
+		if (DISP_TRACE_STDOUT) { 
+			fprintf(stdout, "cycle %d\t\t\tDELAY\n", _pio_info_g.cycles);
+		}
 
 		(_pio_info_g.delay_timer)--;		// decrement delay timer
 		(_pio_info_g.cycles)++;				// increment cycle counter
@@ -2065,9 +2072,9 @@ static void pio_exec_instruction(void)
 		if (pio_pop_txfifo(&pop_val) == true) {
 			_pio_info_g.osr			= pop_val;
 			_pio_info_g.osr_bitctr	= 0;			// (full)
-#ifdef DISP_TRACE_STDOUT
-			fprintf(stdout, "\tAUTOPULL\n");
-#endif
+			if (DISP_TRACE_STDOUT) { 
+				fprintf(stdout, "\tAUTOPULL\n");
+			}
 			autopull_done		= true;
 		}
 		else {
@@ -2090,9 +2097,9 @@ static void pio_exec_instruction(void)
 	addr	= ap->addr;
 
 	pio_write_csv_output_inst();		// write instruction BEFORE executing instruction
-#ifdef DISP_TRACE_STDOUT
-	fprintf(stdout, "cycle %d, line %d, pc=%d\t%s\n", _pio_info_g.cycles, ap->code_line, ap->addr, ap->asmbuf);
-#endif
+	if (DISP_TRACE_STDOUT) { 
+		fprintf(stdout, "cycle %d, line %d, pc=%d\t%s\n", _pio_info_g.cycles, ap->code_line, ap->addr, ap->asmbuf);
+	}
 
 	switch (inst) {
 	/////////////////////////////////
@@ -3888,6 +3895,14 @@ void pio_wrap(void)
 void pio_origin(int addr)
 {
 	pio_register_instruction(PIO_INST_ORIGIN, addr, PIO_UNUSE, PIO_UNUSE, PIO_UNUSE, PIO_UNUSE, PIO_UNUSE, PIO_UNUSE, (char *)NULL);
+}
+
+void pio_init(bool out_gpio_bit_by_bit, bool in_gpio_bit_by_bit, bool disp_asm_stdout, bool distp_trace_stdout)
+{
+	PIO_OUT_GPIO_BIT_BY_BIT = out_gpio_bit_by_bit;
+	PIO_IN_GPIO_BIT_BY_BIT = in_gpio_bit_by_bit;
+	DISP_ASM_STDOUT = disp_asm_stdout;
+	DISP_TRACE_STDOUT = distp_trace_stdout;
 }
 
 #endif	// PICOPIO_EMU
