@@ -700,6 +700,8 @@
 ////////////////////////////
 // emulator API
 ////////////////////////////
+extern void pio_init(bool out_gpio_bit_by_bit, bool in_gpio_bit_by_bit, bool disp_asm_stdout, bool distp_trace_stdout);
+
 extern void pio_code_start(
 	char	*funcname, 
 	int		sm_id,					// state machine ID (for IRQ rel)
@@ -3893,6 +3895,14 @@ void pio_wrap(void)
 void pio_origin(int addr)
 {
 	pio_register_instruction(PIO_INST_ORIGIN, addr, PIO_UNUSE, PIO_UNUSE, PIO_UNUSE, PIO_UNUSE, PIO_UNUSE, PIO_UNUSE, (char *)NULL);
+}
+
+void pio_init(bool out_gpio_bit_by_bit, bool in_gpio_bit_by_bit, bool disp_asm_stdout, bool distp_trace_stdout)
+{
+	PIO_OUT_GPIO_BIT_BY_BIT = out_gpio_bit_by_bit;
+	PIO_IN_GPIO_BIT_BY_BIT = in_gpio_bit_by_bit;
+	DISP_ASM_STDOUT = disp_asm_stdout;
+	DISP_TRACE_STDOUT = distp_trace_stdout;
 }
 
 #endif	// PICOPIO_EMU
