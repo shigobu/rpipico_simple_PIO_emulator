@@ -6,6 +6,67 @@
     public class PicopioEmu
     {
         /// <summary>
+        /// in, out, mov で使用する。
+        /// </summary>
+        enum Operands1
+        {
+            PINS = 100,
+            X = 101,
+            Y = 102,
+            NULL = 103,
+            ISR = 104,
+            OSR = 105,
+            PC = 106,
+            EXEC = 107,
+            PINDIRS = 108,
+            STATUS = 109,
+        }
+
+        /// <summary>
+        /// mov で使用する。
+        /// </summary>
+        enum Operands2
+        {
+            NONE = 200,
+            INVERT = 201,
+            BIT_REVERSE = 202,
+        }
+
+        /// <summary>
+        /// jmp で使用する。
+        /// </summary>
+        enum Operands3
+        {
+            ALWAYS = 300,
+            X_EQ_0 = 301,
+            X_NEQ_0_DEC = 302,
+            Y_EQ_0 = 303,
+            Y_NEQ_0_DEC = 304,
+            X_NEQ_Y = 305,
+            PIN = 306,
+            OSRE_NOTEMPTY = 307,
+        }
+
+        /// <summary>
+        /// wait で使用する。
+        /// </summary>
+        enum Operands4
+        {
+            GPIO = 400,
+            PIN = Operands3.PIN,
+            IRQ = 402,
+        }
+
+        /// <summary>
+        /// push, pull で使用する。
+        /// </summary>
+        enum Operands5
+        {
+            BLOCK = 500,
+            NOBLOCK = 501,
+        }
+
+        /// <summary>
         /// エミュレータのオプション機能を設定します。
         /// </summary>
         /// <param name="outGpioBitByBit"></param>
@@ -42,29 +103,58 @@
         /// <param name="movStatusSel"></param>
         /// <param name="movStatusVal"></param>
         public static void CodeStart(
-                        string funcname,
-                        int smId,                  // state machine ID (for IRQ rel)
+                string funcname,
+                int smId,                  // state machine ID (for IRQ rel)
 
-                        int inPins,
-                        int inNum,
-                        int outPins,
-                        int outNum,
-                        int sidesetPins,
-                        int sidesetNum,
-                        bool sidesetOpt,
+                int inPins,
+                int inNum,
+                int outPins,
+                int outNum,
+                int sidesetPins,
+                int sidesetNum,
+                bool sidesetOpt,
 
-                        bool isrShiftRight,       // SHIFTCTRL_IN_SHITDIR
-                        bool isrAutopush,
-                        int isrAutopushThreshold, // SHIFTCTRL_PUSH_THRESH
-                        bool osrShiftRight,       // SHIFTCTRL_OUT_SHIFTDIR
-                        bool osrAutopull,
-                        int osrAutopullThreshold, // SHIFTCTRL_PULL_THRESH
-                        int jmpPin,                // EXECCTRL_JMP_PIN
-                        bool movStatusSel,            // EXECCTRL_STATUS_SEL
-                        int movStatusVal          // EXECCTRL_STATUS_SEL
+                bool isrShiftRight,       // SHIFTCTRL_IN_SHITDIR
+                bool isrAutopush,
+                int isrAutopushThreshold, // SHIFTCTRL_PUSH_THRESH
+                bool osrShiftRight,       // SHIFTCTRL_OUT_SHIFTDIR
+                bool osrAutopull,
+                int osrAutopullThreshold, // SHIFTCTRL_PULL_THRESH
+                int jmpPin,                // EXECCTRL_JMP_PIN
+                bool movStatusSel,            // EXECCTRL_STATUS_SEL
+                int movStatusVal          // EXECCTRL_STATUS_SEL
             )
         {
             NativeMethod.pio_code_start(funcname, smId, inPins, inNum, outPins, outNum, sidesetPins, sidesetNum, sidesetOpt, isrShiftRight, isrAutopush, isrAutopushThreshold, osrShiftRight, osrAutopull, osrAutopullThreshold, jmpPin, movStatusSel, movStatusVal);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="funcname"></param>
+        /// <param name="smId"></param>
+        /// <param name="inPins"></param>
+        /// <param name="inNum"></param>
+        /// <param name="outPins"></param>
+        /// <param name="outNum"></param>
+        /// <param name="sidesetPins"></param>
+        /// <param name="sidesetNum"></param>
+        /// <param name="sidesetOpt"></param>
+        public static void CodeStartSimple(
+                string funcname,
+                int smId,                  // state machine ID (will be used for IRQ rel)
+
+                int inPins,
+                int inNum,
+                int outPins,
+                int outNum,
+                int sidesetPins,
+                int sidesetNum,
+                bool sidesetOpt
+            )
+        {
+            NativeMethod.pio_code_start_simple(funcname, smId, inPins, inNum, outPins, outNum, sidesetPins, sidesetNum, sidesetOpt);
+        }
+
     }
 }
