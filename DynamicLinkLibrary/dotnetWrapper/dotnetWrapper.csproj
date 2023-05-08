@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <Platforms>x64;x86</Platforms>
     <RootNamespace>DotnetWrapper</RootNamespace>
+    <AssemblyName>PicopioEmuDotnet</AssemblyName>
   </PropertyGroup>
 
 </Project>
