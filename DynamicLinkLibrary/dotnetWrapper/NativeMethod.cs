@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace DotnetWrapper
+namespace PicopioEmu
 {
     /// <summary>
     /// DllImportをまとめたクラス

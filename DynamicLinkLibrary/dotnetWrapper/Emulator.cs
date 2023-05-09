@@ -1,9 +1,9 @@
-﻿namespace DotnetWrapper
+﻿namespace PicopioEmu
 {
     /// <summary>
     /// PIOエミュレータ
     /// </summary>
-    public class PicopioEmu
+    public class Emulator
     {
         public static readonly int UNUSE = -1;
 
