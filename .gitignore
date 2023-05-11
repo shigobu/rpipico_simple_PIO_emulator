@@ -2,3 +2,7 @@
 /DynamicLinkLibrary/DynamicLinkLibrary/lib
 /DynamicLinkLibrary/.vs
 /DynamicLinkLibrary/DynamicLinkLibrary/DynamicLinkLibrary.vcxproj.user
+/DynamicLinkLibrary/dotnetWrapper/bin
+/DynamicLinkLibrary/dotnetWrapper/obj
+/DynamicLinkLibrary/sample/bin
+/DynamicLinkLibrary/sample/obj

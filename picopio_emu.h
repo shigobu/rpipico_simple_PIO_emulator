@@ -703,7 +703,7 @@
 extern void pio_init(bool out_gpio_bit_by_bit, bool in_gpio_bit_by_bit, bool disp_asm_stdout, bool distp_trace_stdout);
 
 extern void pio_code_start(
-	char	*funcname, 
+	const char	*funcname, 
 	int		sm_id,					// state machine ID (for IRQ rel)
 
 	int		in_pins, 
@@ -726,7 +726,7 @@ extern void pio_code_start(
 );
 
 extern void pio_code_start_simple(
-	char	*funcname, 
+	const char	*funcname, 
 	int		sm_id,					// state machine ID (will be used for IRQ rel)
 
 	int		in_pins, 
@@ -740,12 +740,12 @@ extern void pio_code_start_simple(
 
 extern void pio_code_end(bool write_code, char *file_name_code);
 
-extern void pio_run_emulation(int cycles, char *file_name_in, char *file_name_out);
+extern void pio_run_emulation(int cycles, char *file_name_in, const char *file_name_out);
 
 ////////////////////////////
 // instructions
 ////////////////////////////
-extern void pio_jmp(int cond, char *lbl, int sideset, int delay);
+extern void pio_jmp(int cond, const char *lbl, int sideset, int delay);
 extern void pio_wait(bool polarity, int src, int index, bool rel, int sideset, int delay);
 extern void pio_in(int src, int bitcount, int sideset, int delay);
 extern void pio_out(int dest, int bitcount, int sideset, int delay);
@@ -756,8 +756,8 @@ extern void pio_irq(bool clr, bool wait, int index, bool rel, int sideset, int d
 extern void pio_set(int dest, int data, int sideset, int delay);
 
 // (pseudo instructions)
-extern void pio_comment(char *string);		// max len = MAX_COMMENT_LEN
-extern void pio_label(char *lbl);
+extern void pio_comment(const char *string);		// max len = MAX_COMMENT_LEN
+extern void pio_label(const char *lbl);
 extern void pio_nop(int sideset, int delay);
 extern void pio_wrap_target(void);
 extern void pio_wrap(void);

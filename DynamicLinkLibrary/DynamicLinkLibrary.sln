@@ -5,6 +5,13 @@ VisualStudioVersion = 16.0.33214.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DynamicLinkLibrary", "DynamicLinkLibrary\DynamicLinkLibrary.vcxproj", "{11643376-6C2B-4B4B-9F9A-F2FD4CA685BE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnetWrapper", "dotnetWrapper\dotnetWrapper.csproj", "{25D04D43-9415-457A-B8D2-1308679CFF36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sample", "sample\sample.csproj", "{C4138E97-90A8-4A54-886B-56E31A718138}"
+	ProjectSection(ProjectDependencies) = postProject
+		{11643376-6C2B-4B4B-9F9A-F2FD4CA685BE} = {11643376-6C2B-4B4B-9F9A-F2FD4CA685BE}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +28,22 @@ Global
 		{11643376-6C2B-4B4B-9F9A-F2FD4CA685BE}.Release|x64.Build.0 = Release|x64
 		{11643376-6C2B-4B4B-9F9A-F2FD4CA685BE}.Release|x86.ActiveCfg = Release|Win32
 		{11643376-6C2B-4B4B-9F9A-F2FD4CA685BE}.Release|x86.Build.0 = Release|Win32
+		{25D04D43-9415-457A-B8D2-1308679CFF36}.Debug|x64.ActiveCfg = Debug|x64
+		{25D04D43-9415-457A-B8D2-1308679CFF36}.Debug|x64.Build.0 = Debug|x64
+		{25D04D43-9415-457A-B8D2-1308679CFF36}.Debug|x86.ActiveCfg = Debug|x86
+		{25D04D43-9415-457A-B8D2-1308679CFF36}.Debug|x86.Build.0 = Debug|x86
+		{25D04D43-9415-457A-B8D2-1308679CFF36}.Release|x64.ActiveCfg = Release|x64
+		{25D04D43-9415-457A-B8D2-1308679CFF36}.Release|x64.Build.0 = Release|x64
+		{25D04D43-9415-457A-B8D2-1308679CFF36}.Release|x86.ActiveCfg = Release|x86
+		{25D04D43-9415-457A-B8D2-1308679CFF36}.Release|x86.Build.0 = Release|x86
+		{C4138E97-90A8-4A54-886B-56E31A718138}.Debug|x64.ActiveCfg = Debug|x64
+		{C4138E97-90A8-4A54-886B-56E31A718138}.Debug|x64.Build.0 = Debug|x64
+		{C4138E97-90A8-4A54-886B-56E31A718138}.Debug|x86.ActiveCfg = Debug|x86
+		{C4138E97-90A8-4A54-886B-56E31A718138}.Debug|x86.Build.0 = Debug|x86
+		{C4138E97-90A8-4A54-886B-56E31A718138}.Release|x64.ActiveCfg = Release|x64
+		{C4138E97-90A8-4A54-886B-56E31A718138}.Release|x64.Build.0 = Release|x64
+		{C4138E97-90A8-4A54-886B-56E31A718138}.Release|x86.ActiveCfg = Release|x86
+		{C4138E97-90A8-4A54-886B-56E31A718138}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
