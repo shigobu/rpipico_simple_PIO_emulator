@@ -1,4 +1,6 @@
-Modified for Windows Visual Studio.
+Modified for Windows Visual Studio.  
+Add Dll project.  
+Add dotnet wrapper.  
 
 # An Easy-to-Use RPI Pico PIO Emulator
 
@@ -7,9 +9,9 @@ tool is almost independent of OS environment (Linux, Windows etc.) and requires 
 compiler only. While the provided emulator cannot handle multi-SM, the whole design flow supports 
 designing multi-SM applications.
 
-“ú–{Œê‚Å‚Ìà–¾‚Í[ƒCƒ“ƒ^[ƒtƒF[ƒX2022”N9Œ†pp.36-48i†”}‘Ì‚Ü‚½‚Í“dq‘Ğj](https://interface.cqpub.co.jp/magazine/202210/ "Japanese document")‚É‚ ‚è‚Ü‚·D
-ƒ‰ƒYƒxƒŠ[ƒpƒCPico‚ÌŠÈ’PPIOƒGƒ~ƒ…ƒŒ[ƒ^‚Å‚·DƒXƒe[ƒgƒ}ƒVƒ“1‚Â‚Ì“®ìŒŸØê—p‚Å‚·‚ªC‘½‚­‚Ìê‡‚Í
-–‘«‚è‚é‚Å‚µ‚å‚¤DCƒRƒ“ƒpƒCƒ‰‚³‚¦‚ ‚ê‚ÎCƒTƒ“ƒvƒ‹‚ğ^—‚·‚é‚¾‚¯‚Å‚·‚®‚Ég‚¦‚Ü‚·D
+æ—¥æœ¬èªã§ã®èª¬æ˜ã¯[ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹èªŒ2022å¹´9æœˆå·pp.36-48ï¼ˆç´™åª’ä½“ã¾ãŸã¯é›»å­æ›¸ç±ï¼‰](https://interface.cqpub.co.jp/magazine/202210/ "Japanese document")ã«ã‚ã‚Šã¾ã™ï¼
+ãƒ©ã‚ºãƒ™ãƒªãƒ¼ãƒ‘ã‚¤Picoã®ç°¡å˜PIOã‚¨ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚¿ã§ã™ï¼ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³1ã¤ã®å‹•ä½œæ¤œè¨¼å°‚ç”¨ã§ã™ãŒï¼Œå¤šãã®å ´åˆã¯
+äº‹è¶³ã‚Šã‚‹ã§ã—ã‚‡ã†ï¼Cã‚³ãƒ³ãƒ‘ã‚¤ãƒ©ã•ãˆã‚ã‚Œã°ï¼Œã‚µãƒ³ãƒ—ãƒ«ã‚’çœŸä¼¼ã™ã‚‹ã ã‘ã§ã™ãã«ä½¿ãˆã¾ã™ï¼
 
 
 ## 1. Overall Design Flow
@@ -147,4 +149,4 @@ is a sample implementation of multi-SM and IRQ.
 
 **Any information on bugs is welcome!**
 
-ƒoƒO‚Ì‚¨’m‚ç‚¹‚ÍŠ½Œ}‚Å‚·I
+ãƒã‚°ã®ãŠçŸ¥ã‚‰ã›ã¯æ­“è¿ã§ã™ï¼
